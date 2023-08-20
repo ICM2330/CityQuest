@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="morado_oscuro">#444F88</color>
+    <color name ="amarillo">#d6da01</color>
+    <color name ="colorIconos">#000319</color>
+
+</resources>
