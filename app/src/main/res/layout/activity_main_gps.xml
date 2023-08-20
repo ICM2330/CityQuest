@@ -8,25 +8,29 @@
         android:layout_height="match_parent"
         >
 
+
         <ImageButton
             android:id="@+id/insertarLocalizacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_location_on_24"
+            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
-            app:layout_constraintBottom_toTopOf="@+id/imageButton"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            android:src="@drawable/baseline_location_on_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_more_24"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="220dp"
             android:background="@android:color/transparent"
-            app:layout_constraintBottom_toTopOf="@+id/PerfilUsuario"
-            app:layout_constraintEnd_toEndOf="@+id/toolbar"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/baseline_more_24"
+            app:layout_constraintBottom_toTopOf="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/insertarLocalizacion" />
 
         <androidx.appcompat.widget.Toolbar
 
@@ -43,56 +47,71 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-
-<ImageButton
+        <ImageButton
             android:id="@+id/subirFoto"
             android:layout_width="70dp"
             android:layout_height="70dp"
 
-            android:layout_marginBottom="10dp"
+
+            android:layout_marginBottom="16dp"
             android:background="@android:color/transparent"
-
-
             android:src="@drawable/baseline_add_circle_24"
-            app:layout_constraintBottom_toTopOf="@+id/PerfilUsuario"
+            app:layout_constraintBottom_toTopOf="@+id/imageView3"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
 
-
-        <!-- Other views within the LinearLayout -->
-
-        <ImageButton
-            android:id="@+id/NotificacionesUsuario"
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/headermorado"
-            android:src="@drawable/baseline_notifications_none_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/PerfilUsuario"
-            app:layout_constraintStart_toEndOf="@+id/TiendaDePuntos" />
-
-        <!-- Space between buttons -->
-
-
-        <ImageButton
-            android:id="@+id/PerfilUsuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:background="@drawable/layer_morado"
-            android:src="@drawable/baseline_person_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/empty" />
 
         <ImageButton
             android:id="@+id/TiendaDePuntos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:background="@drawable/layer_morado"
-            android:src="@drawable/baseline_shopping_cart_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/NotificacionesUsuario"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:srcCompat="@drawable/baseline_shopping_cart_24" />
+
+        <ImageButton
+            android:id="@+id/NotificacionesUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/layer_morado"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:srcCompat="@drawable/baseline_notifications_none_24" />
+
+        <ImageButton
+            android:id="@+id/PerfilUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/layer_morado"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/NotificacionesUsuario"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:srcCompat="@drawable/baseline_person_24" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Other views within the LinearLayout -->
+
+        <!-- Space between buttons -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

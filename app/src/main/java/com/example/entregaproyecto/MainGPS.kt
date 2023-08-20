@@ -1,6 +1,7 @@
 package com.example.entregaproyecto
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,17 @@ class MainGPS : AppCompatActivity() {
         binding = ActivityMainGpsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.PerfilUsuario.setOnClickListener {
+            startActivity(Intent(baseContext,Perfil::class.java))
+        }
+
+        binding.NotificacionesUsuario.setOnClickListener {
+            TODO("Realizar pantalla de notificaciones")
+        }
+
+        binding.TiendaDePuntos.setOnClickListener {
+            startActivity(Intent(baseContext,TiendaDePuntos::class.java))
+        }
 
     }
 

@@ -10,6 +10,6 @@ class Perfil : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPerfilBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_perfil)
+        setContentView(binding.root)
     }
 }
