@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.example.entregaproyecto.databinding.ActivityMainGpsBinding
 import com.example.entregaproyecto.databinding.ActivityRecomendacionesBinding
 
 class Recomendaciones : AppCompatActivity() {
@@ -27,12 +26,12 @@ class Recomendaciones : AppCompatActivity() {
 
         when (item.itemId) {
 
-            R.id.action_menu -> {
+            R.id.action_settings -> {
                 val intent = Intent(baseContext, MainGPS::class.java)
                 startActivity(intent)
             }
 
-            R.id.action_settings -> {
+            R.id.action_home -> {
 
                 val intent = Intent(baseContext, Settings::class.java)
                 startActivity(intent)

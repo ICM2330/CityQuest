@@ -25,12 +25,12 @@ class TiendaDePuntos : AppCompatActivity() {
 
         when (item.itemId) {
 
-            R.id.action_menu -> {
+            R.id.action_settings -> {
                 val intent = Intent(baseContext, MainGPS::class.java)
                 startActivity(intent)
             }
 
-            R.id.action_settings -> {
+            R.id.action_home -> {
 
                 val intent = Intent(baseContext, Settings::class.java)
                 startActivity(intent)

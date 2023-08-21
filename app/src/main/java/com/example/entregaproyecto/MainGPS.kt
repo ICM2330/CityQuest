@@ -26,7 +26,6 @@ class MainGPS : AppCompatActivity() {
         }
 
         binding.TiendaDePuntos.setOnClickListener {
-
             startActivity(Intent(baseContext, TiendaDePuntos::class.java))
         }
 
@@ -34,35 +33,32 @@ class MainGPS : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
-        setContentView(binding.root)
+        val home = binding.toolbar.menu.findItem(R.id.action_home)
 
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
-
-        when (item.itemId) {
-
-            R.id.action_menu -> {
-                Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
-                val intent = Intent(this, MainActivity::class.java)
-
-                startActivity(intent)
-
+        when(item.itemId){
+            R.id.action_home->{
+                openHome()
+                return true
+            }
+            R.id.action_settings ->{
+                openSettings()
                 return true
             }
 
-            R.id.action_settings -> {
-                Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
-                val intent = Intent(this, Settings::class.java)
-                startActivity(intent)
-                return true
+            else -> return super.onOptionsItemSelected(item)
 
-            }
         }
+    }
 
+    private fun openHome (){
+        startActivity(Intent(this,MainGPS::class.java))
+    }
 
-        return super.onOptionsItemSelected(item)
+    private fun openSettings(){
+        startActivity(Intent(this,Settings::class.java))
     }
 }

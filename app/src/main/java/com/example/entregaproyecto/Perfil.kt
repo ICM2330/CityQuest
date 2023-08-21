@@ -18,27 +18,29 @@ class Perfil : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
-
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-
-            R.id.action_menu -> {
-                val intent = Intent(baseContext, MainGPS::class.java)
-                startActivity(intent)
+        return when(item.itemId){
+            R.id.action_home->{
+                openHome()
+                true
             }
 
-            R.id.action_settings -> {
-
-                val intent = Intent(baseContext, Settings::class.java)
-                startActivity(intent)
-
+            R.id.action_settings ->{
+                openSettings()
+                true
             }
+
+            else -> super.onOptionsItemSelected(item)
+
         }
+    }
+    private fun openHome (){
+        startActivity(Intent(this,MainGPS::class.java))
+    }
 
-        return true
+    private fun openSettings(){
+        startActivity(Intent(this,Settings::class.java))
     }
 }
