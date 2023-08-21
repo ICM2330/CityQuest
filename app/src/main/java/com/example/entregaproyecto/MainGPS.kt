@@ -21,7 +21,8 @@ class MainGPS : AppCompatActivity() {
             startActivity(Intent(baseContext, Perfil::class.java))
         }
 
-        binding.NotificacionesUsuario.setOnClickListener {
+        binding.NotificacionesUsuario.setOnClickListener {startActivity(Intent(baseContext, MainActivity::class.java
+        ))
             TODO("Realizar pantalla de notificaciones")
         }
 
@@ -30,8 +31,26 @@ class MainGPS : AppCompatActivity() {
             startActivity(Intent(baseContext, TiendaDePuntos::class.java))
         }
 
-    }
+        val menuHome = binding.toolbar.menu.getItem(0)
+        menuHome.setOnMenuItemClickListener { clickedItem ->
+            if (clickedItem.itemId == R.id.action_menu) {
+                startActivity(Intent(baseContext, MainActivity::class.java))
+                true
+            } else {
+                false
+            }
+        }
 
+        val menuSettings = binding.toolbar.menu.getItem(1)
+        menuSettings.setOnMenuItemClickListener { clickedItem ->
+            if (clickedItem.itemId == R.id.action_settings) {
+                startActivity(Intent(baseContext, Settings::class.java))
+                true
+            } else {
+                false
+            }
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         setContentView(binding.root)
@@ -39,7 +58,7 @@ class MainGPS : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+   /* override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
 
         when (item.itemId) {
@@ -64,5 +83,5 @@ class MainGPS : AppCompatActivity() {
 
 
         return super.onOptionsItemSelected(item)
-    }
+    }*/
 }
