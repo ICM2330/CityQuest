@@ -4,8 +4,6 @@ package com.example.entregaproyecto
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.entregaproyecto.databinding.ActivityMainGpsBinding
 
@@ -18,7 +16,7 @@ class MainGPS : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.PerfilUsuario.setOnClickListener {
-            startActivity(Intent(baseContext, Perfil::class.java))
+            startActivity(Intent(baseContext,Perfil::class.java))
         }
 
         binding.NotificacionesUsuario.setOnClickListener {
@@ -26,24 +24,7 @@ class MainGPS : AppCompatActivity() {
         }
 
         binding.TiendaDePuntos.setOnClickListener {
-            startActivity(Intent(baseContext, TiendaDePuntos::class.java))
-        }
-
-        binding.toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_settings -> {
-                    val intent = Intent(this, Configuracion::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.action_other -> {
-                    val mensaje = "Funciona :D"
-                    Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> false
-            }
-
+            startActivity(Intent(baseContext,TiendaDePuntos::class.java))
         }
 
     }
@@ -52,4 +33,6 @@ class MainGPS : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return true
     }
+
+
 }
