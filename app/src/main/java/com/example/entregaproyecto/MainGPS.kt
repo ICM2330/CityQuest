@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.example.entregaproyecto.R.id.action_menu
+import com.example.entregaproyecto.R.id.action_settings
 import com.example.entregaproyecto.databinding.ActivityMainGpsBinding
 
 
@@ -21,6 +23,10 @@ class MainGPS : AppCompatActivity() {
             startActivity(Intent(baseContext, Perfil::class.java))
         }
 
+        binding.subirFoto.setOnClickListener{
+            startActivity(Intent(baseContext,NuevaLocacion::class.java))
+        }
+
         binding.NotificacionesUsuario.setOnClickListener {startActivity(Intent(baseContext, MainActivity::class.java
         ))
             TODO("Realizar pantalla de notificaciones")
@@ -31,9 +37,10 @@ class MainGPS : AppCompatActivity() {
             startActivity(Intent(baseContext, TiendaDePuntos::class.java))
         }
 
+
         val menuHome = binding.toolbar.menu.getItem(0)
         menuHome.setOnMenuItemClickListener { clickedItem ->
-            if (clickedItem.itemId == R.id.action_menu) {
+            if (clickedItem.itemId == action_menu) {
                 startActivity(Intent(baseContext, MainActivity::class.java))
                 true
             } else {
@@ -43,12 +50,16 @@ class MainGPS : AppCompatActivity() {
 
         val menuSettings = binding.toolbar.menu.getItem(1)
         menuSettings.setOnMenuItemClickListener { clickedItem ->
-            if (clickedItem.itemId == R.id.action_settings) {
+            if (clickedItem.itemId == action_settings) {
                 startActivity(Intent(baseContext, Settings::class.java))
                 true
             } else {
                 false
             }
+        }
+
+        binding.insertarLocalizacion.setOnClickListener{
+            startActivity(Intent(baseContext,CercaDeTi::class.java))
         }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
