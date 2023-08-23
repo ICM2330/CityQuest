@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EntregaProyecto"
         tools:targetApi="31">
+        <activity android:name=".IrA"
+            android:exported="false"/>
+        <activity android:name=".CercaDeTi"
+            android:exported="false"/>
+        <activity android:name=".NuevaLocacion"
+            android:exported="true"/>
         <activity
             android:name=".Perfil"
             android:exported="false" />
@@ -39,6 +45,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

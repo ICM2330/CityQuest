@@ -28,6 +28,14 @@ class MainGPS : AppCompatActivity() {
             startActivity(Intent(baseContext,TiendaDePuntos::class.java))
         }
 
+        binding.subirFoto.setOnClickListener{
+            startActivity(Intent(baseContext,NuevaLocacion::class.java))
+        }
+
+        binding.insertarLocalizacion.setOnClickListener{
+            startActivity(Intent(baseContext,CercaDeTi::class.java))
+        }
+
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_settings -> {
