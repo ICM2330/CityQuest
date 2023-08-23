@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         binding.enviar.setOnClickListener{
             startActivity(Intent(baseContext,MainGPS::class.java))
         }
+
     }
 
 

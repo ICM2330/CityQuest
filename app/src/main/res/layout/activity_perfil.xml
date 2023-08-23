@@ -60,7 +60,18 @@ app:menu="@menu/menu_toolbar">
             android:layout_gravity="center_vertical"
             android:layout_weight="70"
             android:text="Carlos"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
+
+        <ImageButton
+            android:id="@+id/botonAmgigos"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_weight="20"
+            android:background="@android:color/transparent"
+            android:layout_gravity="right"
+            android:scaleType="fitCenter"
+            app:tint="@color/white"
+            app:srcCompat="@drawable/baseline_more_horiz_24" />
 
     </LinearLayout>
 

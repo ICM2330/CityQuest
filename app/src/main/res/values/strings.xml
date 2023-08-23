@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">EntregaProyecto</string>
+    <string name="fecha_nacimiento">\n</string>
+    <string name="fecha_de_nacimiento">\n</string>
+    <string name="celular" />
+    <string name="tel_fono" />
+    <string name="e_mail_outlook_com">\n</string>
+    <string name="e_mail">\n</string>
+    <string name="apellido" />
+    <string name="lastName" />
+    <string name="nombre" />
+    <string name="name" />
+    <string name="configuraci_n" />
+    <string name="settings">Settings</string>
+    <string name="menu">Menu</string>
 </resources>

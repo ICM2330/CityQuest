@@ -43,8 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:theme="@style/ToolbarTheme"
-            app:menu="@menu/menu_toolbar">
-        </androidx.appcompat.widget.Toolbar>
+            app:menu="@menu/menu_toolbar" />
 
 
         <ImageButton

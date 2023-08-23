@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,8 +9,6 @@
     android:background="@drawable/background">
 
     <androidx.appcompat.widget.Toolbar
-
-
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -19,7 +18,91 @@
         app:layout_constraintTop_toTopOf="parent"
         app:theme="@style/ToolbarTheme"
         app:menu="@menu/menu_toolbar">
-
     </androidx.appcompat.widget.Toolbar>
+
+    <!-- Agregar texto de cantidad de puntos -->
+    <TextView
+        android:id="@+id/textViewPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tienes 500 puntos"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="20dp"
+        android:shadowColor="#ffffff"
+        android:shadowDx="1"
+        android:textColor="#ffffff"
+    />
+
+
+
+    <!-- Agregar imagen y precio del primer producto -->
+
+    <ImageView
+        android:id="@+id/imageViewProduct1"
+        android:layout_width="182dp"
+        android:layout_height="174dp"
+        android:padding="1dp"
+        android:src="@drawable/airpods"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewPoints" />
+
+    <TextView
+        android:id="@+id/textViewPrice1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$19.99"
+        app:layout_constraintTop_toBottomOf="@id/textViewPoints"
+        app:layout_constraintStart_toEndOf="@id/imageViewProduct1"
+        android:background="#ffffff"
+        android:padding="16dp"/>
+
+
+    <!-- Agregar imagen y precio del segundo producto -->
+
+    <ImageView
+        android:id="@+id/imageViewProduct2"
+        android:layout_width="174dp"
+        android:layout_height="183dp"
+        android:padding="16dp"
+        android:src="@drawable/airf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProduct1" />
+
+    <TextView
+        android:id="@+id/textViewPrice2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="#ffffff"
+        android:padding="16dp"
+
+        android:text="$29.99"
+        app:layout_constraintStart_toEndOf="@id/imageViewProduct2"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProduct1" />
+
+    <ImageView
+        android:id="@+id/imageViewProduct3"
+        android:layout_width="174dp"
+        android:layout_height="183dp"
+        android:padding="16dp"
+        android:src="@drawable/portatil"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProduct2" />
+
+    <TextView
+        android:id="@+id/textViewPrice3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="#ffffff"
+        android:padding="16dp"
+
+        android:text="$79.99"
+        app:layout_constraintStart_toEndOf="@id/imageViewProduct3"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProduct2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
