@@ -3,6 +3,8 @@ package com.example.entregaproyecto
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 
 import com.example.entregaproyecto.databinding.ActivityPerfilBinding
 
@@ -33,5 +35,33 @@ class Perfil : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.action_home->{
+                openHome()
+                true
+            }
+
+            R.id.action_settings ->{
+                openSettings()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+
+        }
+    }
+    private fun openHome (){
+        startActivity(Intent(this,MainGPS::class.java))
+    }
+
+    private fun openSettings(){
+        startActivity(Intent(this,Settings::class.java))
     }
 }

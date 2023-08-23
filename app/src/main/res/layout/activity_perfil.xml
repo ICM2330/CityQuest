@@ -9,8 +9,6 @@
     tools:context=".Perfil">
 
     <androidx.appcompat.widget.Toolbar
-
-
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -19,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:theme="@style/ToolbarTheme"
-app:menu="@menu/menu_toolbar">
+        app:menu="@menu/menu_toolbar">
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout

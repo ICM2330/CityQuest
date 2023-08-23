@@ -3,8 +3,13 @@ package com.example.entregaproyecto
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+
 import android.widget.Toast
+
+import android.view.MenuItem
+
 import androidx.appcompat.app.AppCompatActivity
 import com.example.entregaproyecto.databinding.ActivityMainGpsBinding
 
@@ -17,7 +22,7 @@ class MainGPS : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.PerfilUsuario.setOnClickListener {
-            startActivity(Intent(baseContext,Perfil::class.java))
+            startActivity(Intent(baseContext, Perfil::class.java))
         }
 
         binding.NotificacionesUsuario.setOnClickListener {
@@ -25,7 +30,7 @@ class MainGPS : AppCompatActivity() {
         }
 
         binding.TiendaDePuntos.setOnClickListener {
-            startActivity(Intent(baseContext,TiendaDePuntos::class.java))
+            startActivity(Intent(baseContext, TiendaDePuntos::class.java))
         }
 
         binding.toolbar.setOnMenuItemClickListener { item ->
@@ -48,6 +53,8 @@ class MainGPS : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
+        val home = binding.toolbar.menu.findItem(R.id.action_home)
+
         return true
     }
 }
