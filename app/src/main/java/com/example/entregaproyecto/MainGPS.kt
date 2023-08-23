@@ -23,12 +23,16 @@ class MainGPS : AppCompatActivity() {
             startActivity(Intent(baseContext, Perfil::class.java))
         }
 
-        binding.subirFoto.setOnClickListener{
-            startActivity(Intent(baseContext,NuevaLocacion::class.java))
+        binding.subirFoto.setOnClickListener {
+            startActivity(Intent(baseContext, NuevaLocacion::class.java))
         }
 
-        binding.NotificacionesUsuario.setOnClickListener {startActivity(Intent(baseContext, MainActivity::class.java
-        ))
+        binding.NotificacionesUsuario.setOnClickListener {
+            startActivity(
+                Intent(
+                    baseContext, MainActivity::class.java
+                )
+            )
             TODO("Realizar pantalla de notificaciones")
         }
 
@@ -38,61 +42,41 @@ class MainGPS : AppCompatActivity() {
         }
 
 
-        val menuHome = binding.toolbar.menu.getItem(0)
-        menuHome.setOnMenuItemClickListener { clickedItem ->
-            if (clickedItem.itemId == action_menu) {
-                startActivity(Intent(baseContext, MainActivity::class.java))
-                true
-            } else {
-                false
-            }
+
+        binding.insertarLocalizacion.setOnClickListener {
+            startActivity(Intent(baseContext, CercaDeTi::class.java))
         }
 
-        val menuSettings = binding.toolbar.menu.getItem(1)
-        menuSettings.setOnMenuItemClickListener { clickedItem ->
-            if (clickedItem.itemId == action_settings) {
-                startActivity(Intent(baseContext, Settings::class.java))
-                true
-            } else {
-                false
-            }
-        }
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
 
-        binding.insertarLocalizacion.setOnClickListener{
-            startActivity(Intent(baseContext,CercaDeTi::class.java))
+                R.id.action_menu -> {
+
+                    val intent = Intent(this, MainActivity::class.java)
+
+                    startActivity(intent)
+
+                    true
+                }
+
+                R.id.action_settings -> {
+                    val intent = Intent(this, Settings::class.java)
+                    startActivity(intent)
+                    true
+
+                }
+
+
+                else -> false
+            }
+
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         setContentView(binding.root)
 
         return true
     }
-
-   /* override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
-
-        when (item.itemId) {
-
-            R.id.action_menu -> {
-                Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
-                val intent = Intent(this, MainActivity::class.java)
-
-                startActivity(intent)
-
-                return true
-            }
-
-            R.id.action_settings -> {
-                Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
-                val intent = Intent(this, Settings::class.java)
-                startActivity(intent)
-                return true
-
-            }
-        }
-
-
-        return super.onOptionsItemSelected(item)
-    }*/
 }

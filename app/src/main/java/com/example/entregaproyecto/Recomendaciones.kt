@@ -3,6 +3,7 @@ package com.example.entregaproyecto
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.example.entregaproyecto.databinding.ActivityMainGpsBinding
@@ -15,30 +16,36 @@ class Recomendaciones : AppCompatActivity() {
         binding = ActivityRecomendacionesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+
+                R.id.action_menu -> {
+                    Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
+                    val intent = Intent(this, MainActivity::class.java)
+
+                    startActivity(intent)
+
+                    true
+                }
+
+                R.id.action_settings -> {
+                    Log.d("MenuDebug", "Menu item selected: ${item.itemId}")
+                    val intent = Intent(this, Settings::class.java)
+                    startActivity(intent)
+                    true
+
+                }
+
+
+                else -> false
+            }
+
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-
-            R.id.action_menu -> {
-                val intent = Intent(baseContext, MainGPS::class.java)
-                startActivity(intent)
-            }
-
-            R.id.action_settings -> {
-
-                val intent = Intent(baseContext, Settings::class.java)
-                startActivity(intent)
-
-            }
-        }
 
         return true
     }
