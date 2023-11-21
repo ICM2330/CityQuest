@@ -1,13 +1,5 @@
 package com.example.cityquest.fragments
 
-/*
-import com.example.cityquest.activities.LoginActivity
-import com.example.cityquest.activities.NotificacionesActivity
-import com.example.cityquest.activities.PerfilActivity
-import com.example.cityquest.activities.PuntosActivity
-import com.example.cityquest.activities.SubirLugar
-
- */
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -178,7 +170,7 @@ class HomeFragment : Fragment(), SensorEventListener {
 
         asdf()
     }
-
+    /*
     private val getContentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
             // Save the image to internal storage
@@ -205,6 +197,8 @@ class HomeFragment : Fragment(), SensorEventListener {
             }
         }
     }
+
+ */
 
     private fun saveImageToInternalStorage(cameraUri: Uri): Uri {
         val inputStream = requireContext().contentResolver.openInputStream(cameraUri)
