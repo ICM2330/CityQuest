@@ -43,7 +43,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.cityquest.R
-import com.example.cityquest.activities.SubirLugarActivity
 import com.example.cityquest.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.model.LatLng
 import org.json.JSONArray
@@ -53,7 +52,6 @@ import org.osmdroid.bonuspack.routing.RoadManager
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView

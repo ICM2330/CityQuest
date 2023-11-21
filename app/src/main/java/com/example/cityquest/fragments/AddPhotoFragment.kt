@@ -1,10 +1,15 @@
 package com.example.cityquest.fragments
 
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import com.example.cityquest.R
 import com.example.cityquest.databinding.FragmentAddPhotoBinding
 import org.osmdroid.config.Configuration
@@ -47,6 +52,41 @@ class AddPhotoFragment : Fragment() {
             requireContext(),
             androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext())
         )
+
+        val latitude = requireActivity().intent.getDoubleExtra(
+            "latitude",
+            0.0
+        ) // 0.0 is a default value if the extra is not found
+        val longitude = requireActivity().intent.getDoubleExtra("longitude", 0.0)
+
+        val imageView = requireView().findViewById<ImageView>(R.id.fotoSubida)
+
+        val latitudText = requireView().findViewById<TextView>(R.id.latitud)
+        val longitudeText = requireView().findViewById<TextView>(R.id.longitud)
+        val formattedLatitud = String.format("%.2f", latitude)
+        val formattedLongitud = String.format("%.2f", longitude)
+
+        latitudText.text = "      Latitude: $formattedLatitud"
+        longitudeText.text = "      Longitude: $formattedLongitud"
+
+        val imageUriString = requireActivity().intent.getStringExtra("imageUri")
+        if (imageUriString != null) {
+            val imageUri = Uri.parse(imageUriString)
+            val imageStream = requireContext().contentResolver.openInputStream(imageUri)
+            val decodedBitmap = BitmapFactory.decodeStream(imageStream)
+            imageView.setImageBitmap(decodedBitmap)
+        }
+
+        val usuarioEditText = requireView().findViewById<EditText>(R.id.usuario)
+        val userText = usuarioEditText.text.toString()
+
+        binding.aceptar.setOnClickListener() {
+
+        }
+
+        binding.rechazar.setOnClickListener() {
+
+        }
     }
 
     companion object {
