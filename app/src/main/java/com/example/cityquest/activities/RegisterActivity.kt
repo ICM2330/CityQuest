@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import com.example.cityquest.databinding.ActivityRegisterBinding
+import com.example.cityquest.models.User
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -40,6 +41,8 @@ import java.util.Locale
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
+
+    //private lateinit var user: User
 
     var name = ""
     var email = ""
@@ -91,6 +94,8 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
+        //user = User()
+
         binding.gallery.setOnClickListener {
             getContentGallery.launch("image/*")
         }
@@ -130,11 +135,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.regButton.setOnClickListener {
             if (validateForm()) {
                 saveUser()
-                /*
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-                */
             } else {
                 val toast = Toast.makeText(this, "Every field must have text. Don't forget to add a profile picture", Toast.LENGTH_SHORT)
                 toast.show()
@@ -162,6 +162,14 @@ class RegisterActivity : AppCompatActivity() {
         acl.publicReadAccess = true
         u.acl = acl
 
+        /*
+                user.firstname = name
+                user.lastname = surname
+                user.user = email
+                user.password = binding.regPw.text.toString()
+                user.latitude = latitude
+                user.longitude = longitude
+        */
         u.signUpInBackground { e: ParseException? ->
             if (e == null) {
                 val sessionToken = u.sessionToken
@@ -266,7 +274,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (photoFile != null) {
                     cameraUri = FileProvider.getUriForFile(
                         this,
-                        "com.example.prueba.fileprovider",
+                        "com.example.cityquest.fileprovider",
                         photoFile
                     )
 

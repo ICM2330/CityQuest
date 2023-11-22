@@ -2,7 +2,6 @@ package com.example.cityquest.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.cityquest.R
 import com.example.cityquest.activities.ChatActivity
-import com.example.cityquest.items.User
+import com.example.cityquest.models.User
 
 class UserAdapter(context: Context, users: List<User>) :
     ArrayAdapter<User>(context, 0, users) {

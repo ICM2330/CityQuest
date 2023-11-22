@@ -1,14 +1,12 @@
 package com.example.cityquest.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.cityquest.R
 import com.example.cityquest.adapters.UserAdapter
 import com.example.cityquest.databinding.ActivityChatListBinding
-import com.example.cityquest.items.User
+import com.example.cityquest.models.User
 import com.parse.ParseQuery
 import com.parse.ParseUser
 

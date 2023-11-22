@@ -1,18 +1,34 @@
 package com.example.cityquest.fragments
 
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.cityquest.R
 import com.example.cityquest.adapters.PhotoAdapter
+import com.example.cityquest.adapters.PhotoItemWrapper
 import com.example.cityquest.databinding.FragmentProfileBinding
-import org.osmdroid.config.Configuration
 import com.example.cityquest.decoration.PhotoDecoration
 import com.example.cityquest.items.PhotoItem
+import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.initialize
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.parse.ParseUser
+import org.osmdroid.config.Configuration
+import org.osmdroid.util.GeoPoint
+import java.util.Locale
 
 // Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +45,8 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var fullname: TextView
+    private lateinit var city: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +65,48 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    private fun retrieveImageByName(imageName: String, imageView: ImageView) {
+        Firebase.initialize(context = requireContext())
+        Firebase.appCheck.installAppCheckProviderFactory(
+            DebugAppCheckProviderFactory.getInstance(),
+        )
+
+        val storageRef: StorageReference = FirebaseStorage.getInstance().reference
+        val imageRef: StorageReference = storageRef.child("images/$imageName.png")
+
+        imageRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                Glide.with(imageView.context)
+                    .load(uri)
+                    .into(imageView)
+            }
+            .addOnFailureListener { exception ->
+                println("Error retrieving image: ${exception.message}")
+            }
+    }
+
+    fun getCityFromLocation(latitude: Double, longitude: Double): String? {
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val geoPoint = GeoPoint(latitude, longitude)
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocation(
+                geoPoint.latitude,
+                geoPoint.longitude,
+                1 // You can specify the maximum number of results here
+            )
+
+            if (!addresses.isNullOrEmpty()) {
+                val address: Address = addresses[0]
+                // Assuming the city is stored in the locality field, modify this based on your requirements
+                return address.locality
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -54,6 +114,17 @@ class ProfileFragment : Fragment() {
             requireContext(),
             androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext())
         )
+
+        val currentUser = ParseUser.getCurrentUser()
+
+        val emptyImageView: ImageView = requireView().findViewById(R.id.profilePicture)
+        retrieveImageByName(currentUser.objectId.toString(), emptyImageView)
+
+        fullname = requireView().findViewById(R.id.nameTextView)
+        fullname.text = "${currentUser.get("name")} ${currentUser.get("surname")}"
+
+        city = requireView().findViewById(R.id.city)
+        city.text = getCityFromLocation(currentUser.get("latitude").toString().toDouble(), currentUser.get("longitude").toString().toDouble())
 
         val recyclerView = requireView().findViewById<RecyclerView>(R.id.photoRecyclerView)
         val layoutManager = LinearLayoutManager(requireContext())
@@ -70,7 +141,7 @@ class ProfileFragment : Fragment() {
             // Agrega más fotos aquí
         )
 
-        val adapter = PhotoAdapter(photos)
+        val adapter = PhotoAdapter(PhotoItemWrapper.PhotoList(photos))
         recyclerView.adapter = adapter
     }
 

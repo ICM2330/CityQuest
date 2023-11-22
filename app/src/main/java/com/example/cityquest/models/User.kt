@@ -1,4 +1,4 @@
-package com.example.cityquest.items
+package com.example.cityquest.models
 import java.io.Serializable
 
 class User(var nombre: String? = null,

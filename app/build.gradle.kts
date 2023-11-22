@@ -70,6 +70,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
     implementation("org.slf4j:slf4j-android:1.7.32")
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-appcheck-debug")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

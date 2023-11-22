@@ -9,8 +9,12 @@ import com.bumptech.glide.Glide
 import com.example.cityquest.items.PhotoItem
 import com.example.cityquest.R
 
+sealed class PhotoItemWrapper {
+    data class PhotoList(val photos: List<PhotoItem>) : PhotoItemWrapper()
+    data class SinglePhoto(val photo: PhotoItem) : PhotoItemWrapper()
+}
 
-class PhotoAdapter(private val photos: List<PhotoItem>) :
+class PhotoAdapter(private val photoItemWrapper: PhotoItemWrapper) :
     RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,14 +24,27 @@ class PhotoAdapter(private val photos: List<PhotoItem>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val photo = photos[position]
-        Glide.with(holder.itemView)
-            .load(photo.imageUrl)
-            .into(holder.photoImageView)
+        when (val photoWrapper = photoItemWrapper) {
+            is PhotoItemWrapper.PhotoList -> {
+                val photo = photoWrapper.photos[position]
+                Glide.with(holder.itemView)
+                    .load(photo.imageUrl)
+                    .into(holder.photoImageView)
+            }
+            is PhotoItemWrapper.SinglePhoto -> {
+                val photo = photoWrapper.photo
+                Glide.with(holder.itemView)
+                    .load(photo.imageUrl)
+                    .into(holder.photoImageView)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return photos.size
+        return when (photoItemWrapper) {
+            is PhotoItemWrapper.PhotoList -> photoItemWrapper.photos.size
+            is PhotoItemWrapper.SinglePhoto -> 1
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

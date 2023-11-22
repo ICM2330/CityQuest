@@ -24,13 +24,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -38,7 +36,6 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.cityquest.R
 import com.example.cityquest.activities.ChatListActivity
-import com.example.cityquest.activities.LoginActivity
 import com.example.cityquest.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.model.LatLng
 import org.json.JSONArray
@@ -143,13 +140,13 @@ class HomeFragment : Fragment(), SensorEventListener {
         orientationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)!!
         sensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_NORMAL)
         addressEditText = requireView().findViewById(R.id.addressEditText)
-        searchButton = requireView().findViewById(R.id.searchButton)
 
         chatList = requireView().findViewById(R.id.ChatList)
         chatList.setOnClickListener{
             startActivity(Intent(requireContext(), ChatListActivity::class.java))
         }
 
+        searchButton = requireView().findViewById(R.id.searchButton)
         searchButton.setOnClickListener {
             val address = addressEditText.text.toString()
             searchLocation(address)
@@ -356,21 +353,21 @@ class HomeFragment : Fragment(), SensorEventListener {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     val userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                     if (userLocation != null) {
-/*
-                        val proximityRadius = 5.0
+                        /*
+                                                val proximityRadius = 5.0
 
-                        val userLatitude = userLocation.latitude
-                        val userLongitude = userLocation.longitude
+                                                val userLatitude = userLocation.latitude
+                                                val userLongitude = userLocation.longitude
 
-                        // Arreglar Toast por proximidad
-                        if(searchPredefinedMarkerByCoordinates(userLatitude, userLongitude)){
+                                                // Arreglar Toast por proximidad
+                                                if(searchPredefinedMarkerByCoordinates(userLatitude, userLongitude)){
 
-                            Toast.makeText(requireContext(), "Felicidades, has encontrado una bella obra de arte", Toast.LENGTH_SHORT).show()
-                        }else{
+                                                    Toast.makeText(requireContext(), "Felicidades, has encontrado una bella obra de arte", Toast.LENGTH_SHORT).show()
+                                                }else{
 
-                            Toast.makeText(requireContext(),"Sigue buscando", Toast.LENGTH_SHORT).show()
-                        }
-*/
+                                                    Toast.makeText(requireContext(),"Sigue buscando", Toast.LENGTH_SHORT).show()
+                                                }
+                        */
                     }
                 }
             }
@@ -483,6 +480,9 @@ class HomeFragment : Fragment(), SensorEventListener {
 
         val sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sensorManager.unregisterListener(this)
+
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager.removeUpdates(locationListener)
     }
 
     override fun onDestroy() {
@@ -793,7 +793,7 @@ class HomeFragment : Fragment(), SensorEventListener {
          * @param param2 Parameter 2.
          * @return A new instance of fragment Home.
          */
-        // TODO: Rename and change types and number of parameters
+        // Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {

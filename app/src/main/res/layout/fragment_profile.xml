@@ -11,7 +11,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Perfil"
         android:textSize="18sp"
@@ -31,10 +31,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/profilePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/perfil_foto"
             tools:layout_editor_absoluteX="38dp"
             tools:layout_editor_absoluteY="228dp" />
     </androidx.cardview.widget.CardView>
@@ -154,19 +153,19 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Luisa Quintero"
+            android:text=""
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="Influencer"
+            android:text=""
             android:textColor="#A9A9A9"
             android:textSize="11sp" />
     </LinearLayout>
@@ -184,20 +183,20 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/asdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="Bogotá, DC"
+            android:text=""
             android:textColor="#797979"
             android:textSize="11sp" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="Programadora de día, escritora de noche"
+            android:text=""
             android:textColor="#797979"
             android:textSize="11sp" />
     </LinearLayout>
