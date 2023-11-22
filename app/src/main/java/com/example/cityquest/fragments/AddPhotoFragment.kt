@@ -53,6 +53,8 @@ class AddPhotoFragment : Fragment() {
     private var imageSelected = false
     lateinit var camera: Button
     lateinit var gallery: Button
+    lateinit var aceptar: Button
+    lateinit var cancelar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,11 +118,12 @@ class AddPhotoFragment : Fragment() {
         val usuarioEditText = requireView().findViewById<EditText>(R.id.usuario)
         val userText = usuarioEditText.text.toString()
 
-        binding.aceptar.setOnClickListener() {
+        aceptar = requireView().findViewById(R.id.aceptar)
+        aceptar.setOnClickListener() {
             uploadFirebaseImage(uriUpload)
         }
-
-        binding.rechazar.setOnClickListener() {
+        cancelar = requireView().findViewById(R.id.rechazar)
+        cancelar.setOnClickListener() {
         }
     }
 
