@@ -1,18 +1,38 @@
 package com.example.cityquest.fragments
 
+import android.Manifest
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import androidx.exifinterface.media.ExifInterface
 import com.example.cityquest.R
 import com.example.cityquest.databinding.FragmentAddPhotoBinding
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import com.parse.ParseUser
 import org.osmdroid.config.Configuration
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +48,11 @@ class AddPhotoFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentAddPhotoBinding
+    private lateinit var uriUpload : Uri
+    lateinit var fotoSubida: ImageView
+    private var imageSelected = false
+    lateinit var camera: Button
+    lateinit var gallery: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +86,17 @@ class AddPhotoFragment : Fragment() {
 
         val imageView = requireView().findViewById<ImageView>(R.id.fotoSubida)
 
+        camera = requireView().findViewById(R.id.camera)
+        gallery = requireView().findViewById(R.id.gallery)
+
+        gallery.setOnClickListener {
+            getContentGallery.launch("image/*")
+        }
+
+        camera.setOnClickListener {
+            requestCameraPermission.launch(Manifest.permission.CAMERA)
+        }
+
         val latitudText = requireView().findViewById<TextView>(R.id.latitud)
         val longitudeText = requireView().findViewById<TextView>(R.id.longitud)
         val formattedLatitud = String.format("%.2f", latitude)
@@ -81,12 +117,65 @@ class AddPhotoFragment : Fragment() {
         val userText = usuarioEditText.text.toString()
 
         binding.aceptar.setOnClickListener() {
-
+            uploadFirebaseImage(uriUpload)
         }
 
         binding.rechazar.setOnClickListener() {
-
         }
+    }
+
+    private fun loadImage(uri: Uri) {
+        try {
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+
+            if (bitmap != null) {
+                fotoSubida = requireView().findViewById(R.id.fotoSubida)
+                fotoSubida.setImageBitmap(rotateImageIfRequired(bitmap, uri))
+                uriUpload = uri
+            } else {
+                Toast.makeText(requireContext(), "Error decoding image", Toast.LENGTH_SHORT).show()
+            }
+
+            inputStream?.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(requireContext(), "Error loading image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun uploadFirebaseImage(uriUpload: Uri) {
+        val currentUser = ParseUser.getCurrentUser()
+        val objectId = currentUser?.objectId
+        val storageRef: StorageReference = FirebaseStorage.getInstance().reference.child("places/${objectId}.png")
+
+        storageRef.putFile(uriUpload)
+            .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
+                val downloadUrl = taskSnapshot.metadata?.reference?.downloadUrl
+                downloadUrl?.addOnSuccessListener { uri ->
+                    println("Image uploaded. URL: $uri")
+                }
+            }
+            .addOnFailureListener { exception: Exception ->
+                println("Error uploading: ${exception.message}")
+            }
+    }
+
+    private fun rotateImageIfRequired(bitmap: Bitmap, uri: Uri): Bitmap {
+        val ei = ExifInterface(requireContext().contentResolver.openInputStream(uri)!!)
+
+        return when (ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+            else -> bitmap
+        }
+    }
+
+    private fun rotateBitmap(source: Bitmap, angle: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 
     companion object {
@@ -107,5 +196,67 @@ class AddPhotoFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private val getContentGallery =
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
+            loadImage(it!!)
+            uriUpload = it
+            imageSelected = true
+        }
+
+    private val getContentCamera =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                loadImage(uriUpload)
+                imageSelected = true
+            } else {
+                Toast.makeText(requireContext(), "Failed to capture image", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private val requestCameraPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                openCamera()
+            } else {
+                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private fun createImageFile(): File? {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        )
+    }
+
+    private fun openCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(requireContext().packageManager) != null) {
+            try {
+                val photoFile = createImageFile()
+                if (photoFile != null) {
+                    uriUpload = FileProvider.getUriForFile(
+                        requireContext(),
+                        "com.example.cityquest.fileprovider",
+                        photoFile
+                    )
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriUpload)
+                    getContentCamera.launch(uriUpload)
+                } else {
+                    Toast.makeText(requireContext(), "Error creating image file", Toast.LENGTH_SHORT).show()
+                }
+            } catch (ex: IOException) {
+                ex.printStackTrace()
+            }
+        } else {
+            Toast.makeText(requireContext(), "No camera app found", Toast.LENGTH_SHORT).show()
+        }
     }
 }
