@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import java.lang.Math.abs
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.hardware.Sensor
@@ -37,6 +38,7 @@ import androidx.fragment.app.Fragment
 import com.example.cityquest.R
 import com.example.cityquest.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.model.LatLng
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import org.json.JSONArray
 import org.json.JSONObject
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
@@ -80,6 +82,7 @@ class HomeFragment : Fragment(), SensorEventListener {
     private val JSON_FILE_NAME = "location_records.json"
     private var lastLocation: Location? = null
     private lateinit var map: MapView
+    private var lastPressure: Float = 0f
     private lateinit var sensorManager: SensorManager
     private lateinit var lightSensor: Sensor
     private var currentMarker: Marker? = null
@@ -96,6 +99,9 @@ class HomeFragment : Fragment(), SensorEventListener {
     private lateinit var orientationSensor: Sensor
     private lateinit var userGeoPoint: GeoPoint
     private lateinit var direction: String
+    private var pressureTextView: TextView?= null
+    private var circularProgressBar: CircularProgressBar?= null
+    private var barometerSensor: Sensor?= null
     private var marker: Marker? = null
     private val predefinedMarkers = mutableListOf<Marker>()
     private var cameraUri: Uri? = null
@@ -140,6 +146,10 @@ class HomeFragment : Fragment(), SensorEventListener {
         addressEditText = requireView().findViewById(R.id.addressEditText)
         searchButton = requireView().findViewById(R.id.searchButton)
 
+        // Decidimos usar el barometro.
+        pressureTextView = binding.presionTotal
+        circularProgressBar = binding.circularProgressBar
+        barometerSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PRESSURE)
 
         searchButton.setOnClickListener {
             val address = addressEditText.text.toString()
@@ -298,6 +308,16 @@ class HomeFragment : Fragment(), SensorEventListener {
         if(event?.sensor?.type == Sensor.TYPE_LIGHT){
             val lightValue = event.values[0]
             val threshold = 80.0
+            val maxPressure = 1030f
+
+            val pressureValue = event.values[0]
+            //Acá vamos variando la presión por cada 0.2 de cambio en su presión en el barometro
+            if (abs(pressureValue - lastPressure) >= 0.2) {
+                lastPressure = pressureValue
+                //guardar en la base de datos el valor lastPressure (este va asociado a cada usuario)
+            }
+            circularProgressBar?.progress = (lastPressure / maxPressure)*1000
+
             if(lightValue < threshold){
                 map.overlayManager.tilesOverlay.setColorFilter(TilesOverlay.INVERT_COLORS)
             }else{

@@ -66,6 +66,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:3.8.1")
     implementation("np.com.susanthapa:curved_bottom_navigation:0.6.5")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.0")
+    implementation("com.mikhaellopez:circularprogressbar:3.1.0")
     //noinspection GradleDependency
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
