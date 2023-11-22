@@ -7,6 +7,10 @@ import android.widget.Toast
 import com.example.cityquest.adapters.UserAdapter
 import com.example.cityquest.databinding.ActivityChatListBinding
 import com.example.cityquest.models.User
+import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.initialize
 import com.parse.ParseQuery
 import com.parse.ParseUser
 
@@ -20,8 +24,15 @@ class ChatListActivity : AppCompatActivity() {
         binding = ActivityChatListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         setupListView()
         loadUsersFromParse()
+
+        Firebase.initialize(context = this)
+        Firebase.appCheck.installAppCheckProviderFactory(
+            DebugAppCheckProviderFactory.getInstance(),
+        )
     }
 
     private fun setupListView() {

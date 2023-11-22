@@ -1,5 +1,11 @@
 package com.example.cityquest.activities
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +14,11 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.example.cityquest.R
 import com.example.cityquest.databinding.ActivityChatBinding
+import com.parse.ParseCloud
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
@@ -28,6 +36,8 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.hide()
 
         val nombreReceptor = intent.getStringExtra("nombre").toString()
         val emailReceptor = intent.getStringExtra("email").toString()
@@ -69,6 +79,7 @@ class ChatActivity : AppCompatActivity() {
                 if (e == null) {
                     runOnUiThread {
                         addMessageToChat(messageText, true)
+                        sendPushNotification(idChatContrario, messageText)
                     }
                 } else {
                     runOnUiThread {
@@ -77,6 +88,20 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
             messageEditText.text.clear()
+        }
+    }
+
+    private fun sendPushNotification(recipientUserId: String, message: String) {
+        val params = HashMap<String, Any>()
+        params["recipientUserId"] = recipientUserId
+        params["message"] = message
+
+        ParseCloud.callFunctionInBackground<String>("sendPushNotification", params) { result, e ->
+            if (e == null) {
+                Log.d("ChatActivity", "Push notification sent successfully")
+            } else {
+                Log.e("ChatActivity", "Error sending push notification: ${e.message}")
+            }
         }
     }
 
@@ -148,9 +173,34 @@ class ChatActivity : AppCompatActivity() {
                 Log.d("ChatActivity", "Nuevo mensaje recibido a través de LiveQuery")
                 val contenidoMensaje = mensaje.getString("contenido") ?: ""
                 val emisor = mensaje.getString("id_emisor") ?: ""
-
+                sendNotification(this, this@ChatActivity::class.java, contenidoMensaje, "¡Nuevo mensaje!")
                 addMessageToChat(contenidoMensaje, emisor == currentUser.objectId)
+
             }
         }
+    }
+
+    private fun sendNotification(context: Context, targetActivity: Class<*>, message: String, title: String) {
+        val channelId = "cityquest"
+
+        val notificationManager = context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId, "Canal de notificaciones", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val intent = Intent(context, targetActivity)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+
+        val builder = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.logo)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        notificationManager.notify(1, builder.build())
     }
 }

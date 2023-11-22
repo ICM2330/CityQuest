@@ -354,19 +354,19 @@ class HomeFragment : Fragment(), SensorEventListener {
                     val userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                     if (userLocation != null) {
                         /*
-                                                val proximityRadius = 5.0
+                        val proximityRadius = 5.0
 
-                                                val userLatitude = userLocation.latitude
-                                                val userLongitude = userLocation.longitude
+                        val userLatitude = userLocation.latitude
+                        val userLongitude = userLocation.longitude
 
-                                                // Arreglar Toast por proximidad
-                                                if(searchPredefinedMarkerByCoordinates(userLatitude, userLongitude)){
+                        // Arreglar Toast por proximidad
+                        if(searchPredefinedMarkerByCoordinates(userLatitude, userLongitude)){
 
-                                                    Toast.makeText(requireContext(), "Felicidades, has encontrado una bella obra de arte", Toast.LENGTH_SHORT).show()
-                                                }else{
+                            Toast.makeText(requireContext(), "Felicidades, has encontrado una bella obra de arte", Toast.LENGTH_SHORT).show()
+                        }else{
 
-                                                    Toast.makeText(requireContext(),"Sigue buscando", Toast.LENGTH_SHORT).show()
-                                                }
+                            Toast.makeText(requireContext(),"Sigue buscando", Toast.LENGTH_SHORT).show()
+                        }
                         */
                     }
                 }

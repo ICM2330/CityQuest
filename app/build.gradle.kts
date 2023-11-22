@@ -55,6 +55,7 @@ dependencies {
     implementation("com.github.MKergall:osmbonuspack:6.9.0")
     implementation("com.github.parse-community.Parse-SDK-Android:parse:1.26.0")
     implementation("com.github.parse-community:ParseLiveQuery-Android:1.2.2")
+    implementation("com.github.parse-community.Parse-SDK-Android:fcm:4.2.1")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     //noinspection GradleDependency
     implementation("com.google.android.gms:play-services-maps:18.1.0")

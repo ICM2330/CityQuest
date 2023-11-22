@@ -12,9 +12,16 @@ import com.bumptech.glide.Glide
 import com.example.cityquest.R
 import com.example.cityquest.activities.ChatActivity
 import com.example.cityquest.models.User
+import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.initialize
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class UserAdapter(context: Context, users: List<User>) :
     ArrayAdapter<User>(context, 0, users) {
+    var objid: String? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.user_item, parent, false)
@@ -28,9 +35,11 @@ class UserAdapter(context: Context, users: List<User>) :
         nameTextView.text = user?.nombre
         emailTextView.text = user?.email
         var imageID = user?.imageUrl
+        objid = imageID
 
-        if(userImageView != null){
-            Glide.with(context).load(imageID).into(userImageView)
+        if (userImageView != null){
+            retrieveImageByName(imageID.toString(), userImageView)
+            //Glide.with(context).load(imageID).into(userImageView)
         }
 
         // Configura el OnClickListener para cada ítem de la lista
@@ -43,5 +52,20 @@ class UserAdapter(context: Context, users: List<User>) :
             context.startActivity(intent)
         }
         return view
+    }
+
+    private fun retrieveImageByName(imageName: String, imageView: ImageView) {
+        val storageRef: StorageReference = FirebaseStorage.getInstance().reference
+        val imageRef: StorageReference = storageRef.child("images/$imageName.png")
+
+        imageRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                Glide.with(imageView.context)
+                    .load(uri)
+                    .into(imageView)
+            }
+            .addOnFailureListener { exception ->
+                println("Error retrieving image: ${exception.message}")
+            }
     }
 }

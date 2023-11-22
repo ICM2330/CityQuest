@@ -1,19 +1,28 @@
 package com.example.cityquest.fragments
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cityquest.R
+import com.example.cityquest.activities.WelcomeActivity
 import com.example.cityquest.adapters.PhotoAdapter
 import com.example.cityquest.adapters.PhotoItemWrapper
 import com.example.cityquest.databinding.FragmentProfileBinding
@@ -47,6 +56,7 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var fullname: TextView
     private lateinit var city: TextView
+    private lateinit var threeDotsButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,48 +75,7 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun retrieveImageByName(imageName: String, imageView: ImageView) {
-        Firebase.initialize(context = requireContext())
-        Firebase.appCheck.installAppCheckProviderFactory(
-            DebugAppCheckProviderFactory.getInstance(),
-        )
-
-        val storageRef: StorageReference = FirebaseStorage.getInstance().reference
-        val imageRef: StorageReference = storageRef.child("images/$imageName.png")
-
-        imageRef.downloadUrl
-            .addOnSuccessListener { uri ->
-                Glide.with(imageView.context)
-                    .load(uri)
-                    .into(imageView)
-            }
-            .addOnFailureListener { exception ->
-                println("Error retrieving image: ${exception.message}")
-            }
-    }
-
-    fun getCityFromLocation(latitude: Double, longitude: Double): String? {
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        val geoPoint = GeoPoint(latitude, longitude)
-        try {
-            val addresses: List<Address>? = geocoder.getFromLocation(
-                geoPoint.latitude,
-                geoPoint.longitude,
-                1 // You can specify the maximum number of results here
-            )
-
-            if (!addresses.isNullOrEmpty()) {
-                val address: Address = addresses[0]
-                // Assuming the city is stored in the locality field, modify this based on your requirements
-                return address.locality
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return null
-    }
-
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -143,7 +112,100 @@ class ProfileFragment : Fragment() {
 
         val adapter = PhotoAdapter(PhotoItemWrapper.PhotoList(photos))
         recyclerView.adapter = adapter
+
+        threeDotsButton = requireView().findViewById(R.id.threeDotsMenu)
+        threeDotsButton.setOnClickListener{
+            showPopupMenu(threeDotsButton)
+        }
     }
+
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.inflate(R.menu.menu_overflow)
+
+        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.menu_sign_out -> {
+                    showConfirmationDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popupMenu.show()
+    }
+
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmar cierre de sesión")
+            .setMessage("¿Está seguro de que quiere cerrar sesión?")
+            .setPositiveButton("CERRAR SESIÓN") { _, _ ->
+                logOut()
+                Toast.makeText(requireContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("CANCELAR") { dialog, _ ->
+                // Handle cancel button click if needed
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun retrieveImageByName(imageName: String, imageView: ImageView) {
+        Firebase.initialize(context = requireContext())
+        Firebase.appCheck.installAppCheckProviderFactory(
+            DebugAppCheckProviderFactory.getInstance(),
+        )
+
+        val storageRef: StorageReference = FirebaseStorage.getInstance().reference
+        val imageRef: StorageReference = storageRef.child("images/$imageName.png")
+
+        imageRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                Glide.with(imageView.context)
+                    .load(uri)
+                    .into(imageView)
+            }
+            .addOnFailureListener { exception ->
+                println("Error retrieving image: ${exception.message}")
+            }
+    }
+
+    private fun logOut(){
+        ParseUser.logOut()
+
+        val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("sessionToken")
+        editor.apply()
+
+        val intent = Intent(requireContext(), WelcomeActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun getCityFromLocation(latitude: Double, longitude: Double): String? {
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val geoPoint = GeoPoint(latitude, longitude)
+        try {
+            val addresses: List<Address>? = geocoder.getFromLocation(
+                geoPoint.latitude,
+                geoPoint.longitude,
+                1 // You can specify the maximum number of results here
+            )
+
+            if (!addresses.isNullOrEmpty()) {
+                val address: Address = addresses[0]
+                // Assuming the city is stored in the locality field, modify this based on your requirements
+                return address.locality
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
+
+
 
     companion object {
         /**
