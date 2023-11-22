@@ -38,6 +38,7 @@ import com.example.cityquest.R
 import com.example.cityquest.activities.ChatListActivity
 import com.example.cityquest.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.model.LatLng
+import com.parse.ParseUser
 import org.json.JSONArray
 import org.json.JSONObject
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
@@ -576,6 +577,9 @@ class HomeFragment : Fragment(), SensorEventListener {
                 userLocationMarkers.add(marker!!)
                 map.overlays.add(marker!!)
                 map.controller.animateTo(userGeoPoint);
+                val u = ParseUser.getCurrentUser()
+                u.put("latitude", location.latitude)
+                u.put("longitude", location.longitude)
             }
         }
     }
