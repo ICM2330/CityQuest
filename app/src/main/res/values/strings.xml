@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CityQuest</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="a_d_nde_nos_dirigiremos_hoy">¿A dónde nos dirigiremos hoy?</string>
+    <string name="bienvenidaLogin">¡Bienvenido a CityQuest!</string>
+    <string name="developedBy">Desarrollado por Guayaba Cósmica</string>
+    <string name="welcomeBack">¡Bienvenido de vuelta!</string>
+    <string name="register">¡Regístrate!</string>
+</resources>
